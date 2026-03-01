@@ -1,1 +1,11 @@
 
+---
+- hosts: dbservers
+  become: yes
+  vars:
+    currstate: present
+  tasks:
+    - name: Install HTOP
+      action: apt name=htop state='{{currstate}}'
+    - name: Install Git
+      action: apt name=git state='{{currstate}}'
