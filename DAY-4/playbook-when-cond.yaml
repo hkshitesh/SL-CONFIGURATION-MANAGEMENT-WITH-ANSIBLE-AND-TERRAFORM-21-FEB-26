@@ -1,0 +1,26 @@
+---
+- hosts: dbservers
+  become: yes
+  vars:
+    operation: install   # change to 'remove' to uninstall packages
+
+  tasks:
+    - name: Install htop
+      action: apt name=htop state=present update_cache=yes
+      when: operation == "install"
+
+    - name: Install git
+      action: apt name=git state=present update_cache=yes
+      when: operation == "install"
+
+    - name: Remove htop
+      action: apt name=htop state=absent purge=yes
+      when: operation == "remove"
+
+    - name: Remove git
+      action: apt name=git state=absent purge=yes
+      when: operation == "remove"
+
+    - name: Autoremove unused packages
+      action: apt autoremove=yes
+      when: operation == "remove"
